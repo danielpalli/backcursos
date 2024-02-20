@@ -6,9 +6,9 @@ export class UserEntity {
     public firstName: string,
     public lastName: string,
     public email: string,
-    // public emailValidated: boolean,
     public password: string,
     public role: string[],
+    public emailValidated: boolean,
     public active: boolean,
     public avatar?: string
   ) {}

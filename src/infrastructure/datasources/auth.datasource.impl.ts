@@ -24,7 +24,7 @@ export class AuthDataSourceImpl implements AuthDataSource {
     try {
       const exists = await UserModel.findOne({ email });
 
-      if (exists) throw CustomError.badRequest('Credentials invalid');
+      if (exists) throw CustomError.badRequest('User already exists');
 
       const user = await UserModel.create({
         firstName,

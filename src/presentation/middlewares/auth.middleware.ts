@@ -15,10 +15,11 @@ export class AuthMiddleware {
       const payload = await JwtAdapter.validateToken<{id: string}>(token);
       
       if (!payload) return response.status(401).json({ message: 'Unauthorized' });
-
-      const user = await UserModel.findById(payload.id);
+  
+      const user = await UserModel.findById(payload.id); 
 
       if (!user) return response.status(401).json({ message: 'Unauthorized' });
+      if (!user.emailValidated) return response.status(401).json({ message: 'Unauthorized' });
       if (!user.active) return response.status(401).json({ message: 'Unauthorized' });
 
       request.body.user = user;
