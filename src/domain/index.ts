@@ -17,3 +17,6 @@ export * from './datasources/user.datasource';
 export * from './use-cases/auth/register-user.use-case';
 export * from './use-cases/auth/login-user.use-case';
 export * from './use-cases/user/get-all-user.use-case';
+export * from './use-cases/user/get-user-by-id.use-case';
+export * from './use-cases/user/update-user.use-case';
+export * from './use-cases/user/delete-user.use-case';

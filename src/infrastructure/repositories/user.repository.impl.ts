@@ -10,9 +10,9 @@ export class UserRepositoryImple implements UserRepository {
     return this.userDataSource.getUserById(id);
   }
   updateUser(id: string, user: UpdateUserDto): Promise<UserEntity> {
-    throw new Error("Method not implemented.");
+    return this.userDataSource.updateUser(id, user);
   }
   deleteUser(id: string): Promise<boolean> {
-    throw new Error("Method not implemented.");
+    return this.userDataSource.deleteUser(id);
   }
 }

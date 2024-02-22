@@ -20,17 +20,41 @@ export class UserDataSourceImpl implements UserDataSource {
   async getUserById(id: string): Promise<UserEntity> {
     try {
       const user = await UserModel.findById(id);
+      if (!user) throw CustomError.notFound('User not found');
 
-      return UserMapper.userEntityFromObject(user as object);
+      return UserMapper.userEntityFromObject(user);
     } catch (error: any) {
       if (error instanceof CustomError) throw error;
       throw CustomError.notFound('User not found');
     }
   }
-  updateUser(id: string, updateUserDto: UpdateUserDto): Promise<UserEntity> {
-    throw new Error('Method not implemented.');
+
+  async updateUser(
+    id: string,
+    updateUserDto: UpdateUserDto
+  ): Promise<UserEntity> {
+    try {
+      const user = await UserModel.findByIdAndUpdate(id, updateUserDto, {
+        new: true,
+      });
+
+      if (!user) throw CustomError.notFound('User not found');
+
+      return UserMapper.userEntityFromObject(user);
+    } catch (error: any) {
+      if (error instanceof CustomError) throw error;
+      throw CustomError.internalServer(error.message);
+    }
   }
-  deleteUser(id: string): Promise<boolean> {
-    throw new Error('Method not implemented.');
+  
+  async deleteUser(id: string): Promise<boolean> {
+    try {
+      const user = await UserModel.findByIdAndDelete(id);
+      if (!user) throw CustomError.notFound('User not found');
+      return true;
+    } catch (error: any) {
+      if (error instanceof CustomError) throw error;
+      throw CustomError.internalServer(error.message);
+    }
   }
 }

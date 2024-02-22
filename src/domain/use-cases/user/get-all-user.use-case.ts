@@ -1,5 +1,4 @@
 import { UserEntity } from '../../entities/user.entity';
-import { CustomError } from '../../errors/custom.error';
 import { UserRepository } from '../../repositories/user.repository';
 
 interface GetUsersUseCase {

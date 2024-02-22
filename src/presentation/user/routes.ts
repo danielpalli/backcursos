@@ -12,6 +12,8 @@ export class UserRoutes {
 
     router.get('/', [AuthMiddleware.validateToken], controller.getUsers);
     router.get('/:id', controller.getUserById);
+    router.put('/:id', controller.updateUser);
+    router.delete('/:id', controller.deleteUser);
 
     return router;
   }
