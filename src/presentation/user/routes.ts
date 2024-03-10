@@ -1,7 +1,7 @@
-import { Router } from "express";
-import { UserController } from "./controller";
-import { UserDataSourceImpl, UserRepositoryImple } from "../../infrastructure";
-import { AuthMiddleware } from "../middlewares/auth.middleware";
+import { Router } from 'express';
+import { UserController } from './controller';
+import { UserDataSourceImpl, UserRepositoryImple } from '../../infrastructure';
+import { AuthMiddleware } from '../middlewares/auth.middleware';
 
 export class UserRoutes {
   static get routes(): Router {
