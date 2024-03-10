@@ -23,10 +23,6 @@ const userSchema = new mongoose.Schema({
     default: ['USER_ROLE'],
     enum: ['USER_ROLE', 'ADMIN_ROLE'],
   },
-  emailValidated: {
-    type: Boolean,
-    default: false,
-  },
   active: {
     type: Boolean,
     default: true,
