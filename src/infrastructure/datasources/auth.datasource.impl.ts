@@ -1,24 +1,20 @@
 import { BcryptAdapter } from '../../config';
 import { UserModel } from '../../data';
 import {
-  AuthDataSource,
-  CustomError,
-  LoginUserDto,
-  RegisterUserDto,
+  AuthDataSource, CompareFunction,
+  CustomError, HashFunction,
+  LoginUserRequest,
+  RegisterUserRequest,
   UserEntity,
 } from '../../domain';
 import { UserMapper } from '../mappers/user.mapper';
 
-type HashFunction = (password: string) => string;
-type CompareFunction = (password: string, hash: string) => boolean;
-
 export class AuthDataSourceImpl implements AuthDataSource {
-
   constructor(
     private readonly hashPassword: HashFunction = BcryptAdapter.hash,
     private readonly comparePassword: CompareFunction = BcryptAdapter.compare,
   ) {}
-  async register(registerUserDto: RegisterUserDto): Promise<UserEntity> {
+  async register(registerUserDto: RegisterUserRequest): Promise<UserEntity> {
     const { firstName, lastName, email, password } = registerUserDto;
 
     try {
@@ -35,28 +31,28 @@ export class AuthDataSourceImpl implements AuthDataSource {
 
       await user.save();
 
-      return UserMapper.userEntityFromObject(user);
+      return UserMapper.dtoToEntity(user);
     } catch (error: any) {
       if (error instanceof CustomError) throw error;
       throw CustomError.internalServer(error.message);
     }
   }
 
-    
-  async login(loginUserDto: LoginUserDto): Promise<UserEntity> {
+  async login(loginUserDto: LoginUserRequest): Promise<UserEntity> {
     const { email, password } = loginUserDto;
 
     try {
       const user = await UserModel.findOne({ email });
-      if (!user) throw CustomError.badRequest('Credentials invalid');
+      if (!user) throw CustomError.unauthorized('Credenciales inválidas');
 
       const isMatching = this.comparePassword(password, user.password);
-      if (!isMatching) throw CustomError.badRequest('Credentials invalid');
+      if (!isMatching) throw CustomError.unauthorized('Credenciales inválidas');
 
-      return UserMapper.userEntityFromObject(user);
+      return UserMapper.dtoToEntity(user);
     } catch (error: any) {
       if (error instanceof CustomError) throw error;
       throw CustomError.internalServer(error.message);
     }
   }
+
 }

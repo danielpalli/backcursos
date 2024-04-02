@@ -1,10 +1,10 @@
-export class LoginUserDto {
+export class LoginUserRequest {
   private constructor(
     public email: string,
     public password: string
   ) {}
 
-  static create(object: { [key: string]: any }): [string?, LoginUserDto?] {
+  static create(object: { [key: string]: any }): [string?, LoginUserRequest?] {
     const { email, password } = object;
 
     if (!email) return ['Email is required'];
@@ -12,7 +12,7 @@ export class LoginUserDto {
 
     return [
       undefined,
-      new LoginUserDto(email.toLowerCase(), password),
+      new LoginUserRequest(email.toLowerCase(), password),
     ];
   }
 }

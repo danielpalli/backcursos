@@ -1,7 +1,7 @@
-import { CustomError } from "../../domain";
+import {CustomError, UserEntity} from "../../domain";
 
 export class UserMapper {
-  static userEntityFromObject(object: { [key: string] : any }) {
+  static dtoToEntity(object: { [key: string] : any }): UserEntity {
     const { id, _id, firstName, lastName, email, password, role, active, avatar } = object;
     if (!id && !_id) throw CustomError.badRequest('Missing id');
 
@@ -15,17 +15,16 @@ export class UserMapper {
 
     return {
       id: id || _id,
-      firstName,
-      lastName,
       email,
       password,
+      firstName,
+      lastName,
       role,
       active,
       avatar
     };
   }
-
-  static userEntityListFromObjectList(objectList: { [key: string] : any }[]) {
-    return objectList.map(this.userEntityFromObject);
+  static dtosToEntities(objectList: { [key: string] : any }[]) : UserEntity[] {
+    return objectList.map(this.dtoToEntity);
   }
 }

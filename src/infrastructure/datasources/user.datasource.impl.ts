@@ -1,17 +1,23 @@
+import { JwtAdapter } from '../../config';
 import { UserModel } from '../../data';
 import {
-  CustomError,
-  UpdateUserDto,
+  CustomError, SignToken,
+  UpdateUserRequest,
   UserDataSource,
-  UserEntity,
+  UserEntity, UserToken,
 } from '../../domain';
 import { UserMapper } from '../mappers/user.mapper';
 
 export class UserDataSourceImpl implements UserDataSource {
+
+  constructor(
+    private readonly signToken: SignToken = JwtAdapter.generateToken,
+  ) {}
+
   async getUsers(): Promise<UserEntity[]> {
     try {
       const users = await UserModel.find();
-      return UserMapper.userEntityListFromObjectList(users);
+      return UserMapper.dtosToEntities(users);
     } catch (error: any) {
       throw CustomError.internalServer(error.message);
     }
@@ -22,7 +28,7 @@ export class UserDataSourceImpl implements UserDataSource {
       const user = await UserModel.findById(id);
       if (!user) throw CustomError.notFound('User not found');
 
-      return UserMapper.userEntityFromObject(user);
+      return UserMapper.dtoToEntity(user);
     } catch (error: any) {
       if (error instanceof CustomError) throw error;
       throw CustomError.notFound('User not found');
@@ -31,7 +37,7 @@ export class UserDataSourceImpl implements UserDataSource {
 
   async updateUser(
     id: string,
-    updateUserDto: UpdateUserDto
+    updateUserDto: UpdateUserRequest
   ): Promise<UserEntity> {
     try {
       const user = await UserModel.findByIdAndUpdate(id, updateUserDto, {
@@ -40,7 +46,7 @@ export class UserDataSourceImpl implements UserDataSource {
 
       if (!user) throw CustomError.notFound('User not found');
 
-      return UserMapper.userEntityFromObject(user);
+      return UserMapper.dtoToEntity(user);
     } catch (error: any) {
       if (error instanceof CustomError) throw error;
       throw CustomError.internalServer(error.message);
@@ -56,5 +62,28 @@ export class UserDataSourceImpl implements UserDataSource {
       if (error instanceof CustomError) throw error;
       throw CustomError.internalServer(error.message);
     }
+  }
+
+  async checkToken(user: UserEntity): Promise<UserToken> {
+
+    try {
+      const { id } = user;
+  
+      const token = await this.signToken({ id }, '2h');
+      if (!token) throw CustomError.internalServer('Error generating token');
+      
+      return {
+        token,
+        user: {
+          id: user.id,
+          firstName: user.firstName,
+          lastName: user.lastName,
+          email: user.email,
+        }
+      }
+    } catch (error: any) {
+      if (error instanceof CustomError) throw error;
+      throw CustomError.internalServer(error.message);
+    } 
   }
 }

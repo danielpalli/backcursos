@@ -7,6 +7,6 @@ export class UserEntity {
     public password: string,
     public role: string[],
     public active: boolean,
-    public avatar?: string
+    public avatar: string
   ) {}
 }

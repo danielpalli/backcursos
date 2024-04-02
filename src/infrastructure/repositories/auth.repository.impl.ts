@@ -1,13 +1,14 @@
-import { AuthDataSource, AuthRepository, LoginUserDto, RegisterUserDto, UserEntity } from "../../domain";
+import { AuthDataSource, AuthRepository, LoginUserRequest, RegisterUserRequest, UserEntity } from "../../domain";
 
-export class AuthRepositoryImple implements AuthRepository {
+export class AuthRepositoryImpl implements AuthRepository {
   constructor(private readonly authDataSource: AuthDataSource) {}
 
-  register(registerUserDto: RegisterUserDto): Promise<UserEntity> {
+  register(registerUserDto: RegisterUserRequest): Promise<UserEntity> {
     return this.authDataSource.register(registerUserDto);
   }
 
-  login(loginUserDto: LoginUserDto): Promise<UserEntity> {
+  login(loginUserDto: LoginUserRequest): Promise<UserEntity> {
     return this.authDataSource.login(loginUserDto);
   }
+
 }

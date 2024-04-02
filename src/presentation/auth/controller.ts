@@ -2,17 +2,16 @@ import { Request, Response } from 'express';
 import {
   AuthRepository,
   CustomError,
-  LoginUser,
+  LoginUser, LoginUserRequest,
   RegisterUser,
-  RegisterUserDto,
+  RegisterUserRequest,
 } from '../../domain';
-import { LoginUserDto } from '../../domain/dtos/auth/login-user.dto';
 
 export class AuthController {
   constructor(private readonly authRepository: AuthRepository) {}
 
   registerUser = (request: Request, response: Response) => {
-    const [error, registerUserDto] = RegisterUserDto.create(request.body);
+    const [error, registerUserDto] = RegisterUserRequest.create(request.body);
     if (error) return response.status(400).json({ message: error });
 
     new RegisterUser(this.authRepository)
@@ -22,8 +21,8 @@ export class AuthController {
   };
 
   loginUser = (request: Request, response: Response) => {
-    const [error, loginUserDto] = LoginUserDto.create(request.body);
-    if (error) return response.status(400).json({ message: error });
+    const [error, loginUserDto] = LoginUserRequest.create(request.body);
+    if (error) return response.status(401).json({ message: error });
 
     new LoginUser(this.authRepository)
       .execute(loginUserDto!)

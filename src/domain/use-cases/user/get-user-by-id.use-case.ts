@@ -9,7 +9,6 @@ export class GetUserById implements GetUserByIdUseCase {
   constructor(private readonly userRepository: UserRepository) {}
 
   async execute(id: string): Promise<UserEntity> {
-    const users = await this.userRepository.getUserById(id);
-    return users;
+    return await this.userRepository.getUserById(id);
   }
 }
