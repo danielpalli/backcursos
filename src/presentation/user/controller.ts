@@ -6,6 +6,7 @@ import {
   GetUsers,
   GetUserById,
   UserRepository,
+  CheckToken,
 } from '../../domain';
 
 export class UserController {
@@ -37,5 +38,14 @@ export class UserController {
       .execute(request.params.id)
       .then((data) => response.status(200).json(data))
       .catch((error) => CustomError.handleError(error, response));
+  };
+
+  checkToken = (request: Request, response: Response) => {
+    const { user } = request.body;
+    new CheckToken(this.userRepository)
+      .execute(user)
+      .then((data) => response.status(200).json(data))
+      .catch((error) => CustomError.handleError(error, response));
+    
   };
 }
