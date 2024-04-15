@@ -1,7 +1,4 @@
-import { UserEntity } from '..';
-import { UpdateUserRequest } from '../dtos/user/update-user.request';
-import { UserToken } from '../interfaces/user-token.interface';
-
+import { UpdateUserRequest, UserEntity, UserToken } from '..';
 export abstract class UserDataSource {
   abstract getUsers(): Promise<UserEntity[]>;
   abstract getUserById(id: string): Promise<UserEntity>;

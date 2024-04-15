@@ -13,18 +13,13 @@ const commissionSchema = new mongoose.Schema({
     type: Number,
     required: [true, 'Price is required'],
   },
-  isActived: {
+  isActive: {
     type: Boolean,
     default: true,
   },
-  isArchived: {
+  isArchive: {
     type: Boolean,
     default: false,
-  },
-  course: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Course',
-    required: [true, 'Course is required'],
   },
   teacher: {
     type: mongoose.Schema.Types.ObjectId,
@@ -36,12 +31,11 @@ const commissionSchema = new mongoose.Schema({
     ref: 'User',
     default: [],
   },
-  assistant: {
-    type: mongoose.Schema.Types.ObjectId,
+  assistants: {
+    type: [mongoose.Schema.Types.ObjectId],
     ref: 'User',
-    default: null,
+    default: [],
   },
 });
 
 export const CommissionModel = mongoose.model('Commission', commissionSchema);
-  

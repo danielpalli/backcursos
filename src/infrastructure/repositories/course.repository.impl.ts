@@ -7,11 +7,11 @@ export class CourseRepositoryImpl implements CourseRepository {
   createCourse(createCourseDto: CreateCourseRequest): Promise<CourseEntity> {
     return this.courseDataSource.createCourse(createCourseDto);
   }
-  getCourses(paginationDto: PaginationDto): Promise<CourseEntity[]> {
+  getCourses(paginationDto: PaginationDto) {
     return this.courseDataSource.getCourses(paginationDto);
   }
   getCourseByName(name: string): Promise<CourseEntity> {
-    throw new Error("Method not implemented.");
+    return this.courseDataSource.getCourseByName(name);
   }
 
   updateCourse(id: string, updateCourseDto: UpdateCourseRequest): Promise<CourseEntity> {

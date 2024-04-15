@@ -1,3 +1,3 @@
 export interface CompareFunction {
-    (password: string, hash: string): boolean;
+	(password: string, hash: string): boolean;
 }
