@@ -5,5 +5,8 @@ export interface UserToken {
     email: string;
     firstName: string;
     lastName: string;
+    avatar: string;
+    isActive: boolean;
+    role: string[];
   }
 }

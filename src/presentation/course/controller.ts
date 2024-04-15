@@ -9,12 +9,13 @@ import {
   PaginationDto,
   UpdateCourse,
 } from '../../domain';
+import {GetCourse} from "../../domain/use-cases/course/get-course-by-name.use-case";
 
 export class CourseController {
   constructor(private readonly courseRepository: CourseRepository) {}
 
   getCourses = (request: Request, response: Response) => {
-    const { page = 1, limit = 10 } = request.query;
+    const { page = 1, limit = 5 } = request.query;
     const [error, paginationDto] = PaginationDto.create(+page, +limit);
     if (error) return response.status(400).json({ error });
 
@@ -24,7 +25,12 @@ export class CourseController {
       .catch((error) => CustomError.handleError(error, response));
   };
 
-  getCoursesByName = (request: Request, response: Response) => {};
+  getCoursesByName = (request: Request, response: Response) => {
+    new GetCourse(this.courseRepository)
+      .execute(request.params.param)
+      .then((data) => response.status(200).json(data))
+      .catch((error) => CustomError.handleError(error, response));
+  };
 
   createCourse = (request: Request, response: Response) => {
     const [error, createCourseDto] = CreateCourseRequest.create(request.body);

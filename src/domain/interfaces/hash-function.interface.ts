@@ -1,3 +1,3 @@
 export interface HashFunction {
-    (password: string): string;
+	(password: string): string;
 }

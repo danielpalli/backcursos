@@ -17,7 +17,6 @@ export class UserRepositoryImpl implements UserRepository {
     return this.userDataSource.deleteUser(id);
   }
   checkToken(user: UserEntity): Promise<UserToken> {
-    console.log("test");
     return this.userDataSource.checkToken(user);
   }
 }

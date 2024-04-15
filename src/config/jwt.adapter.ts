@@ -20,6 +20,5 @@ export class JwtAdapter {
         resolve(decoded as T);
       });
     });
-
   }
 }

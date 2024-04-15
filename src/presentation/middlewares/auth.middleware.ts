@@ -17,9 +17,9 @@ export class AuthMiddleware {
 
       const user = await UserModel.findById(payload.id); 
       if (!user) return response.status(401).json({ message: 'Unauthorized' });
-      if (!user.active) return response.status(401).json({ message: 'Unauthorized' });
+      if (!user.isActive) return response.status(401).json({ message: 'Unauthorized' });
 
-      request.body.user = UserMapper.dtoToEntity(user);
+      request.body.user = UserMapper.objectToEntity(user);
 
       next();
     } catch (error) {

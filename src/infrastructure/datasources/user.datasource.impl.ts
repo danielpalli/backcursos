@@ -17,7 +17,7 @@ export class UserDataSourceImpl implements UserDataSource {
   async getUsers(): Promise<UserEntity[]> {
     try {
       const users = await UserModel.find();
-      return UserMapper.dtosToEntities(users);
+      return UserMapper.objectsToEntities(users);
     } catch (error: any) {
       throw CustomError.internalServer(error.message);
     }
@@ -28,7 +28,7 @@ export class UserDataSourceImpl implements UserDataSource {
       const user = await UserModel.findById(id);
       if (!user) throw CustomError.notFound('User not found');
 
-      return UserMapper.dtoToEntity(user);
+      return UserMapper.objectToEntity(user);
     } catch (error: any) {
       if (error instanceof CustomError) throw error;
       throw CustomError.notFound('User not found');
@@ -46,7 +46,7 @@ export class UserDataSourceImpl implements UserDataSource {
 
       if (!user) throw CustomError.notFound('User not found');
 
-      return UserMapper.dtoToEntity(user);
+      return UserMapper.objectToEntity(user);
     } catch (error: any) {
       if (error instanceof CustomError) throw error;
       throw CustomError.internalServer(error.message);
@@ -79,6 +79,9 @@ export class UserDataSourceImpl implements UserDataSource {
           firstName: user.firstName,
           lastName: user.lastName,
           email: user.email,
+          avatar: user.avatar,
+          isActive: user.isActive,
+          role: user.role
         }
       }
     } catch (error: any) {

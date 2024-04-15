@@ -1,4 +1,3 @@
-import { Request } from 'express';
 import { JwtAdapter } from '../../../config';
 import { CustomError } from '../../errors/custom.error';
 import { UserRepository } from '../../repositories/user.repository';
@@ -29,6 +28,9 @@ export class CheckToken implements CheckTokenUseCase {
         email: usuario.email,
         firstName: usuario.firstName,
         lastName: usuario.lastName,
+        avatar: usuario.avatar,
+        isActive: usuario.isActive,
+        role: usuario.role,
       },
     };
   }

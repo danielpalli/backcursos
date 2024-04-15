@@ -7,8 +7,7 @@ import {
   RegisterUserRequest,
   UserEntity,
 } from '../../domain';
-import { UserMapper } from '../mappers/user.mapper';
-
+import { UserMapper } from '../';
 export class AuthDataSourceImpl implements AuthDataSource {
   constructor(
     private readonly hashPassword: HashFunction = BcryptAdapter.hash,
@@ -19,8 +18,7 @@ export class AuthDataSourceImpl implements AuthDataSource {
 
     try {
       const exists = await UserModel.findOne({ email });
-
-      if (exists) throw CustomError.badRequest('User already exists');
+      if (exists) throw CustomError.badRequest('El Usuario ya se encuentra registrado');
 
       const user = await UserModel.create({
         firstName,
@@ -31,13 +29,12 @@ export class AuthDataSourceImpl implements AuthDataSource {
 
       await user.save();
 
-      return UserMapper.dtoToEntity(user);
+      return UserMapper.objectToEntity(user);
     } catch (error: any) {
       if (error instanceof CustomError) throw error;
       throw CustomError.internalServer(error.message);
     }
   }
-
   async login(loginUserDto: LoginUserRequest): Promise<UserEntity> {
     const { email, password } = loginUserDto;
 
@@ -48,11 +45,10 @@ export class AuthDataSourceImpl implements AuthDataSource {
       const isMatching = this.comparePassword(password, user.password);
       if (!isMatching) throw CustomError.unauthorized('Credenciales inválidas');
 
-      return UserMapper.dtoToEntity(user);
+      return UserMapper.objectToEntity(user);
     } catch (error: any) {
       if (error instanceof CustomError) throw error;
       throw CustomError.internalServer(error.message);
     }
   }
-
 }
