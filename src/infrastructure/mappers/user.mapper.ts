@@ -2,16 +2,20 @@ import {CustomError, UserEntity} from "../../domain";
 
 export class UserMapper {
   static objectToEntity(object: { [key: string] : any }): UserEntity {
-    const { id, _id, firstName, lastName, email, password, role, isActive, avatar } = object;
-    if (!id && !_id) throw CustomError.badRequest('Missing id');
+    const { id, _id, firstName, lastName, email, password, phone, birthDate, country, role, isActive, avatar, lastConnection } = object;
 
-    if (!firstName) throw CustomError.badRequest('Missing first name');
-    if (!lastName) throw CustomError.badRequest('Missing last name');
-    if (!email) throw CustomError.badRequest('Missing email');
-    if (!password) throw CustomError.badRequest('Missing password');
-    if (!role) throw CustomError.badRequest('Missing role');
-    if (!isActive) throw CustomError.badRequest('Missing active');
-    if (!avatar) throw CustomError.badRequest('Missing avatar');
+    if (!id && !_id) throw CustomError.badRequest('Falta el id del usuario');
+    if (!firstName) throw CustomError.badRequest('Falta el nombre');
+    if (!lastName) throw CustomError.badRequest('Falta el apellido');
+    if (!email) throw CustomError.badRequest('Falta el correo');
+    if (!password) throw CustomError.badRequest('Falta la contraseña');
+    if (!phone) throw CustomError.badRequest('Falta el teléfono');
+    if (!birthDate) throw CustomError.badRequest('Falta la fecha de nacimiento');
+    if (!country) throw CustomError.badRequest('Falta el país');
+    if (!role) throw CustomError.badRequest('Falta el rol');
+    if (!isActive) throw CustomError.badRequest('Falta el estado de activación');
+    if (!avatar) throw CustomError.badRequest('Falta el avatar');
+    if (!lastConnection) throw CustomError.badRequest('Falta la última conexión');
 
     return {
       id: id || _id,
@@ -19,9 +23,13 @@ export class UserMapper {
       password,
       firstName,
       lastName,
+      phone,
+      birthDate,
+      country,
       role,
       isActive,
-      avatar
+      avatar,
+      lastConnection,
     };
   }
   static objectsToEntities(objectList: { [key: string] : any }[]) : UserEntity[] {

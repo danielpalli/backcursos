@@ -35,10 +35,7 @@ export class UserDataSourceImpl implements UserDataSource {
     }
   }
 
-  async updateUser(
-    id: string,
-    updateUserDto: UpdateUserRequest
-  ): Promise<UserEntity> {
+  async updateUser(id: string, updateUserDto: UpdateUserRequest): Promise<UserEntity> {
     try {
       const user = await UserModel.findByIdAndUpdate(id, updateUserDto, {
         new: true,

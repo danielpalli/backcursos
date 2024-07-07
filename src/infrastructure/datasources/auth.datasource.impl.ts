@@ -14,7 +14,7 @@ export class AuthDataSourceImpl implements AuthDataSource {
     private readonly comparePassword: CompareFunction = BcryptAdapter.compare,
   ) {}
   async register(registerUserDto: RegisterUserRequest): Promise<UserEntity> {
-    const { firstName, lastName, email, password } = registerUserDto;
+    const { firstName, lastName, email, password, phone, birthdate, country } = registerUserDto;
 
     try {
       const exists = await UserModel.findOne({ email });
@@ -25,6 +25,9 @@ export class AuthDataSourceImpl implements AuthDataSource {
         lastName,
         email,
         password: this.hashPassword(password),
+        phone,
+        birthdate,
+        country,
       });
 
       await user.save();

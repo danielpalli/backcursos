@@ -11,7 +11,7 @@ export class UserRoutes {
 		const controller = new UserController(repository);
 
 
-		router.use(AuthMiddleware.validateToken);
+		// router.use(AuthMiddleware.validateToken);
 		router.get('/check-token', controller.checkToken);
 		router.get('/:id', controller.getUserById);
 		router.get('/', controller.getUsers);
